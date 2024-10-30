@@ -1,34 +1,19 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use Notifiable;
-
-    protected $fillable = [
-        'username', 'email', 'password', 'role',
-    ];
-
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
     public function courses()
-    {
-        return $this->hasMany(Course::class, 'teacher_id');
-    }
+{
+    return $this->hasMany(Course::class, 'teacher_id');
+}
 
-    public function progressTrackings()
-    {
-        return $this->hasMany(ProgressTracking::class);
-    }
+public function progressTrackings()
+{
+    return $this->hasMany(ProgressTracking::class);
+}
 
-    public function assignments()
-    {
-        return $this->hasMany(AssignmentSubmission::class);
-    }
-
-    
+}

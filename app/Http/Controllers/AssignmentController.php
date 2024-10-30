@@ -2,48 +2,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
 {
-    public function index()
-    {
-        $assignments = Assignment::with('course')->get();
-        return view('assignments.index', compact('assignments'));
-    }
-
     public function create()
     {
-        return view('assignments.create');
+        $courses = Course::all(); // Mengambil semua kursus untuk dropdown
+        return view('assignments.create', compact('courses'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'course_id' => 'required|exists:courses,course_id',
+            'course_id' => 'required|exists:courses,id',
             'assignment_title' => 'required|string|max:255',
             'description' => 'required|string',
             'due_date' => 'required|date',
         ]);
 
-        Assignment::create($request->all());
-        return redirect()->route('assignments.index');
-    }
+        Assignment::create($request->all()); // Menyimpan tugas baru ke database
 
-    public function edit(Assignment $assignment)
-    {
-        return view('assignments.edit', compact('assignment'));
-    }
-
-    public function update(Request $request, Assignment $assignment)
-    {
-        $assignment->update($request->all());
-        return redirect()->route('assignments.index');
-    }
-
-    public function destroy(Assignment $assignment)
-    {
-        $assignment->delete();
-        return redirect()->route('assignments.index');
+        return redirect()->route('assignments.index')->with('success', 'Assignment created successfully.');
     }
 }

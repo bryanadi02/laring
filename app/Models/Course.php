@@ -1,33 +1,38 @@
-<?php
+namespace App\Models;
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class CreateCoursesTable extends Migration
+class Course extends Model
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    use HasFactory;
+
+    protected $fillable = [
+        'course_name', 'description', 'teacher_id',
+    ];
+
+    public function teacher()
     {
-        Schema::create('courses', function (Blueprint $table) {
-            $table->id(); // Ini adalah BIGINT UNSIGNED secara default
-            $table->string('course_name');
-            $table->timestamps();
-        });
-        
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function assignments()
     {
-        Schema::dropIfExists('courses');
+        return $this->hasMany(Assignment::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function progressTrackings()
+    {
+        return $this->hasMany(ProgressTracking::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
     }
 }

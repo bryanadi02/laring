@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,19 +8,18 @@ class Assignment extends Model
 {
     use HasFactory;
 
-    protected $table = 'assignments'; // Nama tabel jika berbeda dari default
-
     protected $fillable = [
-        'course_id', // Kolom yang dapat diisi
-        'assignment_name',
-        // tambahkan kolom lain yang perlu diisi jika ada
+        'course_id', 'assignment_title', 'description', 'due_date',
     ];
 
-    /**
-     * Definisikan relasi ke model Course.
-     */
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->belongsTo(Course::class);
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class);
     }
 }
+

@@ -8,17 +8,16 @@ class Quiz extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'course_id', 'quiz_title',
-    ];
+    protected $fillable = ['course_id', 'quiz_title'];
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
     public function questions()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(QuizQuestion::class, 'quiz_id');
     }
+}
 }
